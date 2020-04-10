@@ -8,11 +8,11 @@
  * ************************************************************
  */
 
-package net.dalu2048.wechatgenius;
+package com.evan.wechat;
 
 import android.content.ContentValues;
 
-import net.dalu2048.wechatgenius.xposed.WechatUtils;
+import com.evan.wechat.xposed.WechatUtils;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -25,7 +25,7 @@ public final class MainXposed implements IXposedHookLoadPackage {
     //微信数据库包名称
     private static final String WECHAT_DATABASE_PACKAGE_NAME = "com.tencent.wcdb.database.SQLiteDatabase";
     //聊天精灵客户端包名称
-    private static final String WECHATGENIUS_PACKAGE_NAME = "net.dalu2048.wechatgenius";
+    private static final String WECHATGENIUS_PACKAGE_NAME = "com.evan.wechat";
     //微信主进程名
     private static final String WECHAT_PROCESS_NAME = "com.tencent.mm";
 
@@ -40,7 +40,7 @@ public final class MainXposed implements IXposedHookLoadPackage {
                 XposedHelpers.findAndHookMethod(classAppUtils,
                         "isModuleActive",
                         XC_MethodReplacement.returnConstant(true));
-                XposedBridge.log("成功hook住net.xxfeng.cc.util.AppUtils的isModuleActive方法。");
+                XposedBridge.log("成功hook住com.evan.wechat.util.AppUtils的isModuleActive方法。");
             }
             return;
         }
@@ -77,8 +77,7 @@ public final class MainXposed implements IXposedHookLoadPackage {
                             return;
                         }
                         //打印出日志
-//                        printInsertLog(tableName, (String) param.args[1], contentValues, (Integer) param.args[3]);
-
+                        printInsertLog(tableName, (String) param.args[1], contentValues, (Integer) param.args[3]);
                         //提取消息内容
                         //1：表示是自己发送的消息
                         int isSend = contentValues.getAsInteger("isSend");
@@ -86,9 +85,13 @@ public final class MainXposed implements IXposedHookLoadPackage {
                         String strContent = contentValues.getAsString("content");
                         //说话人ID
                         String strTalker = contentValues.getAsString("talker");
+                        int type = contentValues.getAsInteger("type");
                         //收到消息，进行回复（要判断不是自己发送的、不是群消息、不是公众号消息，才回复）
-                        if (isSend != 1 && !strTalker.endsWith("@chatroom") && !strTalker.startsWith("gh_")) {
-                            WechatUtils.replyTextMessage(loadPackageParam, "回复：" + strContent, strTalker);
+                        if (isSend != 1 && strTalker.endsWith("@chatroom") && !strTalker.startsWith("gh_")) {
+                            String[] split = strContent.split("\t");
+                            String contentId = split[0];
+                            String content = split[1];
+                            WechatUtils.replyTextMessage707(loadPackageParam, content, strTalker);
                         }
                     }
                 });
@@ -101,10 +104,26 @@ public final class MainXposed implements IXposedHookLoadPackage {
         if (conflictValue < 0 || conflictValue > 5) {
             return;
         }
-        XposedBridge.log("Hook数据库insert。table：" + tableName
+        StringBuffer csb = new StringBuffer();
+        if (contentValues != null) {
+            for (String key : contentValues.keySet()) {
+                csb.append(key);
+                csb.append("=");
+                csb.append(contentValues.get(key));
+                csb.append("&");
+            }
+        }
+//        Hook数据库insert:table：message；
+//        nullColumnHack：msgId；CONFLICT_VALUES：
+//        ；contentValues:
+//        bizClientMsgId=&msgId=8&msgSvrId=5902589209244767384&talker=17595315330@chatroom
+//        &content=cuichenxi8895340:
+//        经济&flag=0&status=3&msgSeq=712093520&createTime=1586485939000&lvbuffer=[B@12640be
+//        &isSend=0&type=1&bizChatId=-1&talkerId=31&
+        XposedBridge.log("Hook数据库insert:table：" + tableName
                 + "；nullColumnHack：" + nullColumnHack
                 + "；CONFLICT_VALUES：" + arrayConflicValues[conflictValue]
-                + "；contentValues:" + contentValues);
+                + "；contentValues:" + csb.toString());
     }
 
 }

@@ -8,7 +8,7 @@
  * ************************************************************
  */
 
-package net.dalu2048.wechatgenius.ui;
+package com.evan.wechat.ui;
 
 import android.app.Activity;
 import android.content.ClipData;
@@ -17,7 +17,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -28,10 +27,8 @@ import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
-import net.dalu2048.wechatgenius.MainActivity;
-import net.dalu2048.wechatgenius.R;
-import net.dalu2048.wechatgenius.entity.AppInfo;
-import net.dalu2048.wechatgenius.util.AppUtils;
+import com.evan.wechat.R;
+import com.evan.wechat.util.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;

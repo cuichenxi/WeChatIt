@@ -1,20 +1,17 @@
-package net.dalu2048.wechatgenius;
+package com.evan.wechat;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
-import net.dalu2048.wechatgenius.entity.AppInfo;
-import net.dalu2048.wechatgenius.net.HttpRequest;
+import com.evan.wechat.entity.AppInfo;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,9 +42,9 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 //请求网络
-                HttpRequest httpRequest = new HttpRequest();
-                String strResponse = httpRequest.getData();
-                Log.d(TAG, strResponse);
+//                HttpRequest httpRequest = new HttpRequest();
+//                String strResponse = httpRequest.getData();
+//                Log.d(TAG, strResponse);
             }
         }).start();
 

@@ -8,7 +8,7 @@
  * ************************************************************
  */
 
-package net.dalu2048.wechatgenius.constant;
+package com.evan.wechat.constant;
 
 /**
  * <pre>

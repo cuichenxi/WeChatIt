@@ -8,15 +8,15 @@
  * ************************************************************
  */
 
-package net.dalu2048.wechatgenius.entity;
+package com.evan.wechat.entity;
 
 import android.content.Context;
 import android.os.Build;
 
-import net.dalu2048.wechatgenius.constant.SupportVersion;
-import net.dalu2048.wechatgenius.util.AppUtils;
-import net.dalu2048.wechatgenius.util.ShellUtil;
-import net.dalu2048.wechatgenius.util.StringUtils;
+import com.evan.wechat.constant.SupportVersion;
+import com.evan.wechat.util.AppUtils;
+import com.evan.wechat.util.ShellUtil;
+import com.evan.wechat.util.StringUtils;
 
 public final class AppInfo {
     //Android系统版本

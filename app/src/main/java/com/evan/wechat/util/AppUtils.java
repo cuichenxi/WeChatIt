@@ -8,7 +8,7 @@
  * ************************************************************
  */
 
-package net.dalu2048.wechatgenius.util;
+package com.evan.wechat.util;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -61,6 +61,6 @@ public final class AppUtils {
 
     //Xposed模块是否激活。默认返回false；激活后hook将其值改为true
     public static boolean isModuleActive() {
-        return false;
+        return true;
     }
 }

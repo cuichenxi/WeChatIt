@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "net.dalu2048.wechatgenius"
+        applicationId "com.evan.wechat"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 101
-        versionName '1.01'
+        versionCode 100
+        versionName '1.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -34,8 +34,6 @@ dependencies {
     compileOnly 'de.robv.android.xposed:api:82'
     compileOnly 'de.robv.android.xposed:api:82:sources'
     //网络请求框架
-    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.1'
+    implementation 'com.zhy:okhttputils:2.6.2'
 }

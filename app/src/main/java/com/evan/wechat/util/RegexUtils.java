@@ -8,9 +8,9 @@
  * ************************************************************
  */
 
-package net.dalu2048.wechatgenius.util;
+package com.evan.wechat.util;
 
-import net.dalu2048.wechatgenius.constant.RegexConstants;
+import com.evan.wechat.constant.RegexConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;

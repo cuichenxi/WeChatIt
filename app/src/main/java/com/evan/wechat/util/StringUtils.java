@@ -8,7 +8,7 @@
  * ************************************************************
  */
 
-package net.dalu2048.wechatgenius.util;
+package com.evan.wechat.util;
 
 public final class StringUtils {
     public static boolean isEmpty(final CharSequence s) {

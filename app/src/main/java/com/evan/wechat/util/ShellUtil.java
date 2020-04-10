@@ -8,7 +8,7 @@
  * ************************************************************
  */
 
-package net.dalu2048.wechatgenius.util;
+package com.evan.wechat.util;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
