@@ -36,4 +36,5 @@ dependencies {
     //网络请求框架
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
     implementation 'com.zhy:okhttputils:2.6.2'
+    api project(':sekiro-lib')
 }

@@ -1,1 +1,22 @@
-https://blankeer.github.io/2018/05/09/%E5%88%A9%E7%94%A8-Xposed-%E5%BF%AB%E9%80%9F%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E5%BE%AE%E4%BF%A1%E6%9C%BA%E5%99%A8%E4%BA%BA/
+table rcontact；nullColumnHack：username；CONFLICT_VALUES： OR REPLACE ；
+contentValues:domainList=&alias=&chatroomFlag=0&quanPin=qunming1&nickname=群名1&
+conRemark=&rowid=26&verifyFlag=0&conRemarkPYShort=&showHead=81&contactLabelIds=
+&pyInitial=QM1&conRemarkPYFull=&weiboNickname=&lvbuff=[B@7be89ec&openImAppid=&
+username=17595315330@chatroom&descWordingId=&weiboFlag=0&type=2
+
+chatroomname:17595315330@chatroom  //群ID
+nickname:群名昵称//  群名昵称
+
+memberlist:wxid_980dllc5zh8i22;cuichenxi8895340; 群成员
+displayname=崔陈喜、崔哥//群成员昵称
+roomowner=cuichenxi8895340//群主
+
+chatroom；nullColumnHack：chatroomname；CONFLICT_VALUES： OR REPLACE ；
+contentValues:rowid=1&style=0&isShowname=0&chatroomname=17595315330@chatroom
+&displayname=崔书恒、爸爸、崔哥、崔接伦&chatroomLocalVersion=0&selfDisplayName=null
+&modifytime=1586533541120&roomdata=[B@af89225&chatroomnick=null&memberCount=4
+&addtime=0&chatroomVersion=0&roomflag=0&chatroomnoticeEditor=null
+&chatroomnotice=null&memberlist=wxid_980dllc5zh8i22;cuichenxi8895340;
+wxid_6sgxg3ytvamf22;wxid_wsbo5dpw5sg522&chatroomnoticePublishTime=0
+&chatroomStatus=0&roomowner=cuichenxi8895340&chatroomdataflag=0&
+

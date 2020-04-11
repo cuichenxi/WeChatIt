@@ -11,8 +11,17 @@
 package com.evan.wechat;
 
 import android.content.ContentValues;
+import android.text.TextUtils;
 
-import com.evan.wechat.xposed.WechatUtils;
+import com.evan.wechat.xposed.WXMessageUtils;
+import com.virjar.sekiro.api.SekiroClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
+import java.util.List;
+import java.util.UUID;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -49,18 +58,50 @@ public final class MainXposed implements IXposedHookLoadPackage {
         if (!lpparam.processName.equals(WECHAT_PROCESS_NAME)) {
             return;
         }
+        SekiroClient.getInstance().connect("10.8.131.76", 5600, UUID.randomUUID().toString(), "Group_wx");
+        SekiroClient.getInstance().registerHandler("sendMessage", new SendMessageHandler(lpparam));
+
         XposedBridge.log("进入微信进程：" + lpparam.processName);
         //调用 hook数据库插入。
-        hookDatabaseInsert(lpparam);
-    }
-
-    //hook数据库插入操作
-    private void hookDatabaseInsert(final XC_LoadPackage.LoadPackageParam loadPackageParam) {
-        Class<?> classDb = XposedHelpers.findClassIfExists(WECHAT_DATABASE_PACKAGE_NAME, loadPackageParam.classLoader);
+        Class<?> classDb = XposedHelpers.findClassIfExists(WECHAT_DATABASE_PACKAGE_NAME, lpparam.classLoader);
         if (classDb == null) {
             XposedBridge.log("hook数据库insert操作：未找到类" + WECHAT_DATABASE_PACKAGE_NAME);
             return;
         }
+        hookDatabaseInsert(classDb, lpparam);
+//        hookDatabaseUpdate(classDb,lpparam);
+    }
+
+    private void hookDatabaseUpdate(Class<?> classDb, XC_LoadPackage.LoadPackageParam lpparam) {
+        XposedHelpers.findAndHookMethod(classDb,
+                "updateWithOnConflict",
+                String.class, ContentValues.class, String.class, String[].class, int.class,
+                new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        String tableName = (String) param.args[0];
+                        ContentValues contentValues = (ContentValues) param.args[1];
+                        String whereClause = (String) param.args[2];
+                        Object whereArgs = param.args[3];
+                        StringBuffer strShereArgs = new StringBuffer();
+                        if (whereArgs instanceof Array) {
+                            List<String> ss = (List<String>) whereArgs;
+                            if (ss != null) {
+                                for (String s : ss) {
+                                    strShereArgs.append(s);
+                                    strShereArgs.append(";");
+                                }
+                            }
+                        }
+                        int conflictAlgorithm = (int) param.args[4];
+                        printInsertLog(tableName + "whereArgs=" + strShereArgs.toString(),
+                                whereClause, contentValues, conflictAlgorithm);
+                    }
+                });
+    }
+
+    //hook数据库插入操作
+    private void hookDatabaseInsert(Class<?> classDb, final XC_LoadPackage.LoadPackageParam loadPackageParam) {
         XposedHelpers.findAndHookMethod(classDb,
                 "insertWithOnConflict",
                 String.class, String.class, ContentValues.class, int.class,
@@ -68,33 +109,50 @@ public final class MainXposed implements IXposedHookLoadPackage {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         String tableName = (String) param.args[0];
+                        String columnHack = (String) param.args[1];
                         ContentValues contentValues = (ContentValues) param.args[2];
+                        int conflictValue = (Integer) param.args[3];
                         if (tableName == null || tableName.length() == 0 || contentValues == null) {
                             return;
                         }
+                        printInsertLog(tableName, columnHack, contentValues, conflictValue);
                         //过滤掉非聊天消息
-                        if (!tableName.equals("message")) {
+                        if (TextUtils.isEmpty(tableName)) {
                             return;
                         }
-                        //打印出日志
-                        printInsertLog(tableName, (String) param.args[1], contentValues, (Integer) param.args[3]);
-                        //提取消息内容
-                        //1：表示是自己发送的消息
-                        int isSend = contentValues.getAsInteger("isSend");
-                        //消息内容
-                        String strContent = contentValues.getAsString("content");
-                        //说话人ID
-                        String strTalker = contentValues.getAsString("talker");
-                        int type = contentValues.getAsInteger("type");
-                        //收到消息，进行回复（要判断不是自己发送的、不是群消息、不是公众号消息，才回复）
-                        if (isSend != 1 && strTalker.endsWith("@chatroom") && !strTalker.startsWith("gh_")) {
-                            String[] split = strContent.split("\t");
-                            String contentId = split[0];
-                            String content = split[1];
-                            WechatUtils.replyTextMessage707(loadPackageParam, content, strTalker);
+                        switch (tableName) {
+                            case "rcontact":
+                                if (TextUtils.equals(columnHack, "username")) {
+                                    String chatroomname = contentValues.getAsString("username");
+                                    String nickname = contentValues.getAsString("nickname");
+                                    JSONObject paramsMap = new JSONObject();
+                                    paramsMap.put("roomId", chatroomname);
+                                    paramsMap.put("nickname", nickname);
+                                    WXMessageUtils.handleMessageChatInfo(paramsMap);
+                                }
+                                break;
+                            case "chatroom":
+                                if (TextUtils.equals(columnHack, "chatroomname")) {
+                                    String chatroomname = contentValues.getAsString("chatroomname");
+                                    String memberlist = contentValues.getAsString("memberlist");
+                                    String displayname = contentValues.getAsString("displayname");
+                                    String roomowner = contentValues.getAsString("roomowner");
+                                    JSONObject paramsMap = new JSONObject();
+                                    paramsMap.put("roomId", chatroomname);
+                                    paramsMap.put("memberlist", memberlist);
+                                    paramsMap.put("displayname", displayname);
+                                    paramsMap.put("roomowner", roomowner);
+                                    WXMessageUtils.handleMessageChatInfo(paramsMap);
+                                }
+                                break;
+                            case "message":
+                                WXMessageUtils.handleMessageRecall(loadPackageParam, contentValues);
+                                break;
                         }
                     }
                 });
+
+
     }
 
     //输出插入操作日志
