@@ -14,6 +14,12 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.Reader;
 import java.util.List;
 
 public final class AppUtils {
@@ -61,6 +67,99 @@ public final class AppUtils {
 
     //Xposed模块是否激活。默认返回false；激活后hook将其值改为true
     public static boolean isModuleActive() {
-        return true;
+        return false;
     }
+
+    private static void printMessage(final InputStream input) {
+        new Thread(new Runnable() {
+            public void run() {
+                final Reader reader = new InputStreamReader(input);
+                final BufferedReader bf = new BufferedReader(reader);
+                String line = null;
+                try {
+                    while ((line = bf.readLine()) != null) {
+                    }
+                    input.close();
+                    reader.close();
+                    bf.close();
+                } catch (Exception e) {
+                    try {
+                        input.close();
+                        reader.close();
+                        bf.close();
+                    } catch (Exception e1) {e1.printStackTrace();}
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * 执行shell命令 有返回值
+     *
+     * @param strCmd
+     * @return
+     */
+    public static String rtdoCmd(String strCmd) {
+        try {
+            Process process = null;
+            PrintWriter printWriter = null;
+            process = Runtime.getRuntime().exec("su");
+            printWriter = new PrintWriter(process.getOutputStream());
+            printWriter.println(strCmd);
+            printWriter.flush();
+            printWriter.close();
+            process.waitFor();
+            InputStream inputStream = null;
+            String ret = "";
+            try {
+                inputStream = process.getInputStream();
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(inputStream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    ret += line;
+                }
+//                printMessage(process.getErrorStream());
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return ret;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    /**
+     * 执行shell命令  无返回值
+     *
+     * @param strCmd
+     * @return
+     */
+    public static String doCmd(String strCmd) {
+        Process process = null;
+        try {
+            PrintWriter printWriter = null;
+            process = Runtime.getRuntime().exec("su");
+            printWriter = new PrintWriter(process.getOutputStream());
+            printWriter.println(strCmd);
+            printWriter.flush();
+            printWriter.close();
+            printMessage(process.getInputStream());
+            printMessage(process.getErrorStream());
+            process.waitFor();
+            return "";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
 }

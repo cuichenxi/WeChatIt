@@ -19,7 +19,7 @@
     <color name="app_color_theme_8">#AC8FEF</color> <!-- Lavender -->
     <color name="app_color_theme_9">#EE85C1</color> <!-- Pink Rose -->
 
-    <color name="app_color_description">@color/qmui_config_color_gray_5</color>
+    <color name="app_color_description">#666</color>
 
     <color name="bar_divider">#D4D6D8</color>
     <color name="tab_panel_bg">#ffffff</color>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<msg>
+    <appmsg appid="wx4310bbd51be7d979" sdkver="0">
+        <title>error.log</title>
+        <des>8.0 KB</des>
+        <action>view</action>
+        <type>6</type>
+        <showtype>0</showtype>
+        <soundtype>0</soundtype>
+        <mediatagname />
+        <messageext />
+        <messageaction />
+        <content />
+        <contentattr>0</contentattr>
+        <url />
+        <lowurl />
+        <dataurl />
+        <lowdataurl />
+        <songalbumurl />
+        <songlyric />
+        <appattach>
+            <totallen>8198</totallen>
+            <attachid>@cdn_30590201000452305002010002046290939202032f4f57020458a6206f02045e9978ae042b777875706c6f61645f31383230303030363330384063686174726f6f6d3137365f313538373131363230350204010400050201000400_8b86ce313dedc52fc4e3c455e9ba656b_1</attachid>
+            <emoticonmd5></emoticonmd5>
+            <fileext>log</fileext>
+            <cdnattachurl>30590201000452305002010002046290939202032f4f57020458a6206f02045e9978ae042b777875706c6f61645f31383230303030363330384063686174726f6f6d3137365f313538373131363230350204010400050201000400</cdnattachurl>
+            <cdnthumbaeskey />
+            <aeskey>8b86ce313dedc52fc4e3c455e9ba656b</aeskey>
+            <encryver>0</encryver>
+            <filekey>18200006308@chatroom176_1587116205</filekey>
+        </appattach>
+        <extinfo />
+        <sourceusername />
+        <sourcedisplayname />
+        <thumburl />
+        <md5>2eb50d27f3a0410ffbfca839aefa0c93</md5>
+        <statextstr>GhQKEnd4NDMxMGJiZDUxYmU3ZDk3OQ==</statextstr>
+        <directshare>0</directshare>
+        <webviewshared>
+            <jsAppId />
+        </webviewshared>
+    </appmsg>
+    <fromusername>cuichenxi8895340</fromusername>
+    <scene>0</scene>
+    <appinfo>
+        <version>24</version>
+        <appname>weixinfile</appname>
+    </appinfo>
+    <commenturl />
+</msg>

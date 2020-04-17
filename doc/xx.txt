@@ -20,3 +20,4 @@ contentValues:rowid=1&style=0&isShowname=0&chatroomname=17595315330@chatroom
 wxid_6sgxg3ytvamf22;wxid_wsbo5dpw5sg522&chatroomnoticePublishTime=0
 &chatroomStatus=0&roomowner=cuichenxi8895340&chatroomdataflag=0&
 
+http://10.8.131.76:5602/invoke?group=group_wx&action=sendMessage&param1=%7B%0A%20%20%22roomId%22%3A%20%2218668915991%40chatroom%22%2C%0A%20%20%22content%22%3A%20%22"{\"miniprogrampage\":{\"title\":\"高济药急送- 五官用药\",\"appid\":\"wx20f5c28b2a296bba\",\"pagepath\":\"modules/o2o/search/index?searchKeyWord=五官用药\",\"thumb_media_id\":\"ezp6y0Kavf0hkPOmoq3TMb0zjeKyLW3Bb9ozldY5paU\",\"thumb_url\":\"http://mmbiz.qpic.cn/mmbiz_png/dJDwcazqt4GxMhib9FAAtPMCWJPuGvVY18oMJ7K6DXJMicgFG5LYZ1kRNWqhcTPRfcJCOD27NJRKZ1vlLpSPX8Fg/0?wx_fmt=png\"}}"%22%2C%0A%20%20%22msgType%22%3A%201%0A%7D

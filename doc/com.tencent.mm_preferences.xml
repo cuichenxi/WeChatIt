@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+    <string name="last_login_nick_name">崔哥</string>
+    <float name="key_sync_session" value="0.7556439" />
+    <string name="reg_last_exit_ui">L200_100</string>
+    <boolean name="qbar_ai_mode_version_1" value="true" />
+    <boolean name="dynamic_bg_will_crash" value="false" />
+    <string name="last_login_uin">2089476178</string>
+    <string name="last_login_use_voice">4243456</string>
+    <long name="__MID_LAST_CHECK_TIME__" value="1586838532803" />
+    <string name="__MTA_DEVICE_INFO__">xjgb4TAYj0Iz0RLW2c9F6naaKpcu4jmlSjFI6wXRyvB6JElq3u3cgL9rHjX5R3lNXFUqnLdMRl5qQXAe+V3UZAULzKM8sJLFB6S7UDC3oed39q9Be9E6WUZgq3NNDg==</string>
+    <boolean name="hasTryToInitVoiceControlData" value="true" />
+    <boolean name="dynamic_bg_init_crash" value="false" />
+    <string name="login_user_name">+8618612607576</string>
+    <long name="check_trim_time" value="1586835787" />
+    <boolean name="hasInitVoiceControlData" value="false" />
+    <string name="__MTA_DEVICE_INFO_CHECK_ENTITY__">{&quot;ts&quot;:1586838532868,&quot;times&quot;:0,&quot;mfreq&quot;:100,&quot;mdays&quot;:3}</string>
+    <long name="MicroMsg.AbstractProcessChecker" value="0" />
+    <string name="last_login_bind_mobile">18612607576</string>
+    <string name="login_weixin_username">wxid_6sgxg3ytvamf22</string>
+    <int name="last_reportdevice_clientversion" value="654312292" />
+    <int name="last_reportdevice_channel" value="0" />
+    <boolean name="Main_ShortCut" value="true" />
+    <string name="last_bind_info">5</string>
+    <int name="dynamic_bg_init_start_point_count" value="0" />
+    <boolean name="login_upload_contacts_already_displayed" value="true" />
+    <long name="handler_trace_log_file_create_time" value="1586835795254" />
+    <string name="last_login_bind_qq">-1745594128</string>
+    <boolean name="isLogin" value="true" />
+    <long name="handler_trace_log_file_full_time" value="0" />
+    <string name="last_avatar_path">/data/user/0/com.tencent.mm/MicroMsg/last_avatar_dir/user_5850524e98e30119cd7e53304c2ffd5b.png</string>
+</map>

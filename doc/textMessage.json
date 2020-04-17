@@ -1,0 +1,23 @@
+[
+  {
+    "roomId": 123213,
+    "content": "文本消息",
+    "msgType": 1
+  },
+  {
+    "roomId": "图片消息",
+    "content": " {\"thumbImageURL\": \"小图链接\",\n    \"imageURL\": \"大图图片\"}",
+    "msgType": 3
+  },
+  {
+    "roomId": "网页消息",
+    "content": " {\"title\": \"标题\",\n    \"description\": \"描述\",\n    \"webpageUrl\": \"网页url\",\n    \"imageUrl\": \"图\"}",
+    "msgType": 6
+  },
+  {
+    "roomId": "小程序消息",
+    "content": "miniprogrampage : {\"title\":\"高济药急送- 五官用药\",\"appid\":\"wx20f5c28b2a296bba\",\"pagepath\":\"modules/o2o/search/index?searchKeyWord=五官用药\",\"thumb_url\":\"http://mmbiz.qpic.cn/mmbiz_pn\"}",
+    "msgType": 33
+  }
+]
+

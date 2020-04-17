@@ -1,7 +1,7 @@
 package com.virjar.sekiro.utils;
 
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * This class provides default values for all Java types, as defined by the JLS.

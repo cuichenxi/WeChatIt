@@ -12,37 +12,51 @@ package com.evan.wechat;
 
 import android.text.TextUtils;
 
-import com.evan.wechat.xposed.WXMessageUtils;
 import com.virjar.sekiro.api.SekiroRequest;
 import com.virjar.sekiro.api.SekiroRequestHandler;
 import com.virjar.sekiro.api.SekiroResponse;
 
 import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import external.com.alibaba.fastjson.JSON;
+import external.com.alibaba.fastjson.JSONObject;
 
 class SendMessageHandler implements SekiroRequestHandler {
-    private final XC_LoadPackage.LoadPackageParam lpparam;
 
-    public SendMessageHandler(XC_LoadPackage.LoadPackageParam lpparam) {
-        this.lpparam = lpparam;
-    }
 
+    /**
+     * {
+     * roomId:"18607205883@chatroom"
+     * content:"下发消息",
+     * msgType:1
+     * }
+     *
+     * @param sekiroRequest
+     * @param sekiroResponse
+     */
     @Override
     public void handleRequest(SekiroRequest sekiroRequest, SekiroResponse sekiroResponse) {
-        String roomId = sekiroRequest.getString("roomId");
-        String content = sekiroRequest.getString("content");
-        XposedBridge.log("SendMessage=" + JSON.toJSONString(sekiroRequest.getJsonModel()));
-        if (TextUtils.isEmpty(roomId) || TextUtils.isEmpty(content)) {
-            return;
+        JSONObject param = sekiroRequest.getParam();
+        if (param != null) {
+            try {
+                String roomId = param.getString("roomId");
+                int msgType = param.getInteger("msgType");
+                String content = param.getString("content");
+                XposedBridge.log("SendMessage=roomId=" + roomId + "content=" + content);
+                XposedBridge.log("SendMessage=" + JSON.toJSONString(sekiroRequest.getJsonModel()));
+                if (TextUtils.isEmpty(roomId) || TextUtils.isEmpty(content)) {
+                    sekiroResponse.failed("参数不对roomId=" + roomId + "content=" + content);
+                    return;
+                }
+                boolean b = WXMessageUtils.sendMessage(msgType, roomId, content);
+                if (b) {
+                    sekiroResponse.success("发送成功");
+                } else {
+                    sekiroResponse.failed("参数不对roomId=" + roomId + "content=" + content);
+                }
+
+            } catch (Exception e) {
+                sekiroResponse.failed("参数不对" + sekiroRequest.getJsonModel().toJSONString());
+            }
         }
-        int msgType = 1;
-        switch (msgType) {
-            case 0:
-            case 1:
-                WXMessageUtils.sentTextMessage(this.lpparam, content, roomId);
-                break;
-        }
-        sekiroResponse.success("发送成功");
     }
 }

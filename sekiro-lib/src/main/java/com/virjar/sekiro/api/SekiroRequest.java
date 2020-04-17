@@ -156,6 +156,16 @@ public class SekiroRequest {
         return jsonModel;
     }
 
+    public JSONObject getParam() {
+        String paramString = jsonModel.getString("param1");
+        try {
+            return JSONObject.parseObject(paramString);
+        } catch (JSONException e) {
+            //ignore
+        }
+        return null;
+    }
+
     public long getSerialNo() {
         return serialNo;
     }

@@ -10,18 +10,17 @@
 
 package com.evan.wechat;
 
+import android.app.Application;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.evan.wechat.xposed.WXMessageUtils;
 import com.virjar.sekiro.api.SekiroClient;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.lang.reflect.Array;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -37,10 +36,20 @@ public final class MainXposed implements IXposedHookLoadPackage {
     private static final String WECHATGENIUS_PACKAGE_NAME = "com.evan.wechat";
     //微信主进程名
     private static final String WECHAT_PROCESS_NAME = "com.tencent.mm";
+    public static XC_LoadPackage.LoadPackageParam lpparam;
+    public static ClassLoader classLoader;
+    public static Context mContext;
+    private SharedPreferences sharedPreferences;
+    private String userId;
+    private String userPhone;
+    private String nickName;
+
+    public static XC_LoadPackage.LoadPackageParam getLpparam() {
+        return lpparam;
+    }
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-
         //region hook模块是否激活
         if (lpparam.packageName.equals(WECHATGENIUS_PACKAGE_NAME)) {
             //hook客户端APP的是否激活返回值。替换为true。
@@ -58,8 +67,6 @@ public final class MainXposed implements IXposedHookLoadPackage {
         if (!lpparam.processName.equals(WECHAT_PROCESS_NAME)) {
             return;
         }
-        SekiroClient.getInstance().connect("10.8.131.76", 5600, UUID.randomUUID().toString(), "Group_wx");
-        SekiroClient.getInstance().registerHandler("sendMessage", new SendMessageHandler(lpparam));
 
         XposedBridge.log("进入微信进程：" + lpparam.processName);
         //调用 hook数据库插入。
@@ -68,8 +75,43 @@ public final class MainXposed implements IXposedHookLoadPackage {
             XposedBridge.log("hook数据库insert操作：未找到类" + WECHAT_DATABASE_PACKAGE_NAME);
             return;
         }
+        applicationAttach();
+        MainXposed.lpparam = lpparam;
+        MainXposed.classLoader = lpparam.classLoader;
+        startSocket();
         hookDatabaseInsert(classDb, lpparam);
 //        hookDatabaseUpdate(classDb,lpparam);
+    }
+
+    private void startSocket() {
+        if (sharedPreferences != null && !SekiroClient.getInstance().isConnecting()) {
+            Boolean isLogin = sharedPreferences.getBoolean("isLogin", false);
+            XposedBridge.log("isLogin=" + isLogin);
+            if (!isLogin) {
+                return;
+            }
+            userPhone = sharedPreferences.getString("login_user_name", "null");
+            userId = sharedPreferences.getString("login_weixin_username", "null");
+            nickName = sharedPreferences.getString("last_login_nick_name", "null");
+            XposedBridge.log("userPhone=" + userPhone);
+            XposedBridge.log("userId=" + userId);
+            XposedBridge.log("nickName=" + nickName);
+            if (userId != null) {
+                SekiroClient.getInstance().connect("10.8.131.76", 5600, userId, "group_wx");
+                SekiroClient.getInstance().registerHandler("sendMessage", new SendMessageHandler());
+            }
+        }
+    }
+
+    private void applicationAttach() {
+        XposedHelpers.findAndHookMethod(Application.class, "attach", new Object[]{Context.class, new XC_MethodHook() {
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                super.afterHookedMethod(param);
+                mContext = ((Context) param.args[0]);
+                sharedPreferences = mContext.getSharedPreferences("com.tencent.mm_preferences", Context.MODE_PRIVATE);
+                XposedBridge.log("applicationAttach...." + mContext.getPackageName());
+            }
+        }});
     }
 
     private void hookDatabaseUpdate(Class<?> classDb, XC_LoadPackage.LoadPackageParam lpparam) {
@@ -108,6 +150,7 @@ public final class MainXposed implements IXposedHookLoadPackage {
                 new XC_MethodHook() {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        startSocket();
                         String tableName = (String) param.args[0];
                         String columnHack = (String) param.args[1];
                         ContentValues contentValues = (ContentValues) param.args[2];
@@ -125,34 +168,102 @@ public final class MainXposed implements IXposedHookLoadPackage {
                                 if (TextUtils.equals(columnHack, "username")) {
                                     String chatroomname = contentValues.getAsString("username");
                                     String nickname = contentValues.getAsString("nickname");
-                                    JSONObject paramsMap = new JSONObject();
+                                    if (TextUtils.isEmpty(chatroomname) || TextUtils.isEmpty(nickname)) {
+                                        return;
+                                    }
+
+                                    HashMap<String, String> paramsMap = new HashMap<String, String>();
+                                    paramsMap.put("clientGroup", "group_wx");
                                     paramsMap.put("roomId", chatroomname);
                                     paramsMap.put("nickname", nickname);
+//                                    paramsMap.put("userId", userId);
+//                                    paramsMap.put("userPhone", userPhone);
+//                                    paramsMap.put("userNickname", nickName);
                                     WXMessageUtils.handleMessageChatInfo(paramsMap);
                                 }
                                 break;
                             case "chatroom":
                                 if (TextUtils.equals(columnHack, "chatroomname")) {
                                     String chatroomname = contentValues.getAsString("chatroomname");
+                                    if (TextUtils.isEmpty(chatroomname)) {
+                                        return;
+                                    }
                                     String memberlist = contentValues.getAsString("memberlist");
                                     String displayname = contentValues.getAsString("displayname");
                                     String roomowner = contentValues.getAsString("roomowner");
-                                    JSONObject paramsMap = new JSONObject();
+                                    HashMap<String, String> paramsMap = new HashMap<String, String>();
+                                    paramsMap.put("clientGroup", "group_wx");
                                     paramsMap.put("roomId", chatroomname);
-                                    paramsMap.put("memberlist", memberlist);
-                                    paramsMap.put("displayname", displayname);
-                                    paramsMap.put("roomowner", roomowner);
+                                    paramsMap.put("owner", roomowner);
+//                                    paramsMap.put("memberlist", memberlist);
+//                                    paramsMap.put("displayname", displayname);
+//                                    paramsMap.put("roomowner", roomowner);
+//                                    paramsMap.put("userId", userId);
+//                                    paramsMap.put("userPhone", userPhone);
+//                                    paramsMap.put("userNickname", nickName);
                                     WXMessageUtils.handleMessageChatInfo(paramsMap);
                                 }
                                 break;
                             case "message":
-                                WXMessageUtils.handleMessageRecall(loadPackageParam, contentValues);
+                                handleMessageRecall(contentValues);
                                 break;
                         }
                     }
                 });
 
 
+    }
+
+    public void handleMessageRecall(ContentValues contentValues) {
+        //提取消息内容
+        //1：表示是自己发送的消息
+        int isSend = contentValues.getAsInteger("isSend");
+        //消息内容
+        String strContent = contentValues.getAsString("content");
+        //说话人ID
+        String strTalker = contentValues.getAsString("talker");
+        long createTime = contentValues.getAsLong("createTime");
+        long currentTimeMillis = System.currentTimeMillis();
+        long time = currentTimeMillis - createTime;
+        XposedBridge.log("createTime=" + createTime + "  currentTimeMillis=" + currentTimeMillis
+                + " time=" + time
+        );
+
+        if (currentTimeMillis - createTime > 1000 * 10) {
+            XposedBridge.log("超过time" + time);
+            return;
+        }
+        int type = contentValues.getAsInteger("type");
+        //收到消息，进行回复（要判断不是自己发送的、不是群消息、不是公众号消息，才回复）
+        if (isSend != 1 && strTalker.endsWith("@chatroom") && !strTalker.startsWith("gh_")) {
+            String content = null;
+            String sendId = null;
+            if (strContent.contains("\n")) {
+                sendId = strContent.substring(0, strContent.indexOf("\n"));
+                content = strContent.substring(sendId.length() + 1);
+            } else {
+                content = strContent;
+            }
+            XposedBridge.log(content);
+            if (TextUtils.equals(content, "1")) {
+                WXMessageUtils.sendText(strTalker, content);
+            } else if (TextUtils.equals(content, "3")) {
+                WXMessageUtils.sendImage(strTalker, "http://mmbiz.qpic.cn/mmbiz_png/dJDwcazqt4GxMhib9FAAtPMCWJPuGvVY18oMJ7K6DXJMicgFG5LYZ1kRNWqhcTPRfcJCOD27NJRKZ1vlLpSPX8Fg/0?wx_fmt=png", "http://mmbiz.qpic.cn/mmbiz_png/dJDwcazqt4GxMhib9FAAtPMCWJPuGvVY18oMJ7K6DXJMicgFG5LYZ1kRNWqhcTPRfcJCOD27NJRKZ1vlLpSPX8Fg/0?wx_fmt=png");
+            } else if (TextUtils.equals(content, "5")) {
+                WXMessageUtils.sendFile(strTalker, "标题", "http://mmbiz.qpic.cn/mmbiz_png/dJDwcazqt4GxMhib9FAAtPMCWJPuGvVY18oMJ7K6DXJMicgFG5LYZ1kRNWqhcTPRfcJCOD27NJRKZ1vlLpSPX8Fg/0?wx_fmt=png", "/sdcard/enhancement.apk");
+            } else if (TextUtils.equals(content, "6")) {
+                WXMessageUtils.sendWebUrl(strTalker, "标题", "描述", "https://www.baidu.com", "http://mmbiz.qpic.cn/mmbiz_png/dJDwcazqt4GxMhib9FAAtPMCWJPuGvVY18oMJ7K6DXJMicgFG5LYZ1kRNWqhcTPRfcJCOD27NJRKZ1vlLpSPX8Fg/0?wx_fmt=png");
+            } else if (TextUtils.equals(content, "33")) {
+                WXMessageUtils.sendMiniMssage(strTalker, "modules/o2o/home/index.html",
+                        "gh_1bce49d2c9c4", "https://www.baidu.com", "标题", "http://mmbiz.qpic.cn/mmbiz_png/dJDwcazqt4GxMhib9FAAtPMCWJPuGvVY18oMJ7K6DXJMicgFG5LYZ1kRNWqhcTPRfcJCOD27NJRKZ1vlLpSPX8Fg/0?wx_fmt=png");
+            }else if (TextUtils.equals(content, "42")) {
+                WXMessageUtils.sendCardInfo(strTalker, "<msg username=\"wxid_6sgxg3ytvamf22\" nickname=\"崔哥\" alias=\"Curry7576\" fullpy=\"崔哥\" shortpy=\"CG\" imagestatus=\"3\" scene=\"17\" province=\"中国大陆\" city=\"北京\" sign=\"流弊\" percard=\"1\" sex=\"1\" certflag=\"0\" certinfo=\"\" certinfoext=\"\" brandIconUrl=\"\" brandHomeUrl=\"\" brandSubscriptConfigUrl=\"\" brandFlags=\"\" regionCode=\"CN_Beijing\"/>");
+            } else {
+                WXMessageUtils.handleMessage(userId, userPhone, nickName, sendId, strTalker, type, content, createTime);
+            }
+        } else {
+            XposedBridge.log("单聊=" + strContent);
+        }
     }
 
     //输出插入操作日志

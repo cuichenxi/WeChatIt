@@ -1,0 +1,71 @@
+<!--
+  ~ *************************************************************
+  ~ 文件：weburl.xml  模块：WeChatGenius  项目：WeChatGenius
+  ~ 当前修改时间：2020年04月16日 14:41:50
+  ~ 上次修改时间：2020年04月16日 14:41:48
+  ~ 作者：大路
+  ~ Copyright (c) 2020
+  ~ *************************************************************
+  -->
+
+<msg>
+    <appmsg appid="" sdkver="0">
+        <title>联通大王卡特价靓号可以二次开卡</title>
+        <des>19元月租大王卡套餐包含腾讯100多款APP免流量，40G封顶（可以解封），通话1毛1分钟，接听免费，流量1</des>
+        <action />
+        <type>5</type>
+        <showtype>0</showtype>
+        <soundtype>0</soundtype>
+        <mediatagname />
+        <messageext />
+        <messageaction />
+        <content />
+        <contentattr>0</contentattr>
+        <url>http://mp.weixin.qq.com/s?__biz=MzI4NzgwMzY1MQ==&amp;mid=2247483901&amp;idx=1&amp;sn=801c42ed47035e28939c0f8da6896f5e&amp;chksm=ebc95191dcbed88795499cd91e0494b6ed995d172aed0a237629086bf184fcef3b92b30cf1f2&amp;mpshare=1&amp;scene=1&amp;srcid=&amp;sharer_sharetime=1587019113974&amp;sharer_shareid=2d9a5da3d1c3873c80be57050e0b518f#rd</url>
+        <lowurl />
+        <dataurl />
+        <lowdataurl />
+        <songalbumurl />
+        <songlyric />
+        <appattach>
+            <totallen>0</totallen>
+            <attachid />
+            <emoticonmd5></emoticonmd5>
+            <fileext />
+            <cdnthumburl>30590201000452305002010002043e47ac6402032f4f560204af7ac2dc02045e97fd6d042b777875706c6f61645f31383230303030363330384063686174726f6f6d3131375f313538373031393131370204010400030201000400</cdnthumburl>
+            <cdnthumbmd5>1b48b611d527ef3821fc9f9f136ab294</cdnthumbmd5>
+            <cdnthumblength>6350</cdnthumblength>
+            <cdnthumbwidth>160</cdnthumbwidth>
+            <cdnthumbheight>160</cdnthumbheight>
+            <cdnthumbaeskey>43495290368420f8368e0787fc2f2c86</cdnthumbaeskey>
+            <aeskey>43495290368420f8368e0787fc2f2c86</aeskey>
+            <encryver>0</encryver>
+            <filekey>18200006308@chatroom117_1587019117</filekey>
+        </appattach>
+        <extinfo />
+        <sourceusername>gh_ec5c31742e8b</sourceusername>
+        <sourcedisplayname>北京宽带办理营业厅</sourcedisplayname>
+        <thumburl>https://mmbiz.qlogo.cn/mmbiz_jpg/X7FMIfWG4aObdbMMeqsykEciaXVnibPmick0k22Jyr0wjFric3P6vMib1V4MC3epYRokUdR5ZVo4ARqeHoBsyNS4LnA/300?wx_fmt=jpeg&amp;wxfrom=1</thumburl>
+        <md5 />
+        <statextstr />
+        <directshare>0</directshare>
+        <mmreadershare>
+            <itemshowtype>0</itemshowtype>
+            <nativepage>0</nativepage>
+            <pubtime>0</pubtime>
+            <duration>0</duration>
+            <width>0</width>
+            <height>0</height>
+            <vid />
+            <funcflag>0</funcflag>
+            <ispaysubscribe>0</ispaysubscribe>
+        </mmreadershare>
+    </appmsg>
+    <fromusername>cuichenxi8895340</fromusername>
+    <scene>0</scene>
+    <appinfo>
+        <version>1</version>
+        <appname />
+    </appinfo>
+    <commenturl />
+</msg>

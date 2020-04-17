@@ -1,0 +1,61 @@
+<msg>
+    <appmsg appid="" sdkver="0">
+        <title>高济药急送，快速送药到家！</title>
+        <des>高济药急送</des>
+        <action />
+        <type>33</type>
+        <showtype>0</showtype>
+        <soundtype>0</soundtype>
+        <mediatagname />
+        <messageext />
+        <messageaction />
+        <content />
+        <contentattr>0</contentattr>
+        <url>https://mp.weixin.qq.com/mp/waerrpage?appid=wx20f5c28b2a296bba&amp;type=upgrade&amp;upgradetype=3#wechat_redirect</url>
+        <lowurl />
+        <dataurl />
+        <lowdataurl />
+        <songalbumurl />
+        <songlyric />
+        <appattach>
+            <totallen>0</totallen>
+            <attachid />
+            <emoticonmd5></emoticonmd5>
+            <fileext />
+            <cdnthumburl>30590201000452305002010002043e47ac6402032f4f560204257ac2dc02045e97f832042b777875706c6f61645f31383230303030363330384063686174726f6f6d3131345f313538373031373737380204010400030201000400</cdnthumburl>
+            <cdnthumbmd5>b08f647dc563288013c3c12db9a518aa</cdnthumbmd5>
+            <cdnthumblength>25885</cdnthumblength>
+            <cdnthumbwidth>720</cdnthumbwidth>
+            <cdnthumbheight>576</cdnthumbheight>
+            <cdnthumbaeskey>d8bc0b01af157f929ea666e019ab1a01</cdnthumbaeskey>
+            <aeskey>d8bc0b01af157f929ea666e019ab1a01</aeskey>
+            <encryver>0</encryver>
+            <filekey>18200006308@chatroom114_1587017778</filekey>
+        </appattach>
+        <extinfo />
+        <sourceusername>gh_1bce49d2c9c4@app</sourceusername>
+        <sourcedisplayname>高济药急送</sourcedisplayname>
+        <thumburl />
+        <md5 />
+        <statextstr />
+        <directshare>0</directshare>
+        <weappinfo>
+            <username><![CDATA[gh_1bce49d2c9c4@app]]></username>
+            <appid><![CDATA[wx20f5c28b2a296bba]]></appid>
+            <type>2</type>
+            <version>40</version>
+            <weappiconurl><![CDATA[http://mmbiz.qpic.cn/mmbiz_png/NT2ibYXkZPku2B41sGQBpZxX1ZOLPePLqADZyU49FFaqOnWicNtn8kBmZhcLGx636fwXfPDrQIow1qnKpG1TxVaQ/640?wx_fmt=png&wxfrom=200]]></weappiconurl>
+            <pagepath><![CDATA[modules/o2o/home/index.html]]></pagepath>
+            <shareId><![CDATA[0_wx20f5c28b2a296bba_2d9a5da3d1c3873c80be57050e0b518f_1587017777_0]]></shareId>
+            <appservicetype>0</appservicetype>
+            <tradingguaranteeflag>0</tradingguaranteeflag>
+        </weappinfo>
+    </appmsg>
+    <fromusername>cuichenxi8895340</fromusername>
+    <scene>0</scene>
+    <appinfo>
+        <version>1</version>
+        <appname />
+    </appinfo>
+    <commenturl />
+</msg>

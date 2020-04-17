@@ -102,6 +102,7 @@ public class SekiroClient {
         if (TextUtils.isEmpty(group)) {
             this.group = "default";
         }
+        sekiroClient.startInternal();
     }
 
     public static SekiroClient getInstance() {
@@ -114,6 +115,10 @@ public class SekiroClient {
     }
 
     private Bootstrap natClientBootstrap;
+
+    public boolean isConnecting() {
+        return isConnecting;
+    }
 
     private void startInternal() {
         if (isStartUp.compareAndSet(false, true)) {

@@ -19,4 +19,7 @@ public class ChatRoomInfo implements Serializable {
     public String memberlist;//wxid_980dllc5zh8i22;cuichenxi8895340; 群成员
     public String displayname;//崔陈喜、崔哥//群成员昵称
     public String roomowner;//cuichenxi8895340//群主
+    public String userId;//cuichenxi8895340//登录用户id
+    public String userPhone;//cuichenxi8895340//登录用户手机
+    public String userNickname;//cuichenxi8895340//登录用户昵称
 }

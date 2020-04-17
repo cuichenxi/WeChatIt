@@ -1,7 +1,8 @@
 package com.virjar.sekiro.api;
 
 import android.net.Uri;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import java.net.URLDecoder;
 import java.util.ArrayList;
